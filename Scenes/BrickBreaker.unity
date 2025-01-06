@@ -1634,7 +1634,7 @@ MonoBehaviour:
   ballSpawner: {fileID: 1475385611}
   ballPrefab: {fileID: 1551842977000183179, guid: a831398848064b94e831ea362c54d9fe, type: 3}
   BallHolder: {fileID: 1086712362}
-  balls: 10
+  balls: 1
   intervalBetweenBallLaunches: 1
   force: 5
   minMaxAngle: {x: -87, y: 87}
