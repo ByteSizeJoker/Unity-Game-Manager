@@ -29,7 +29,7 @@ public class MovePipe : MonoBehaviour
             transform.position += (Vector3.left * moveSpeed * Time.deltaTime);
 
             // Deletes the pipe if it reaches the death_coords
-            if (transform.position.x < death_coords) Destroy(gameObject);
+            if (transform.position.x < death_coords) Destroy(this.gameObject);
         }
     }
     #endregion

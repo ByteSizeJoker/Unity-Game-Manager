@@ -61,7 +61,6 @@ public class logicMain : MonoBehaviour
     public void quitGame()
     {
         Application.Quit();
-        Debug.Log("Quitted");
     }
     #endregion
 

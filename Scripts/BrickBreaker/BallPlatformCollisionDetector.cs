@@ -105,7 +105,7 @@ public class BallPlatformCollisionDetector : MonoBehaviour
                 Destroy(GameObject.FindGameObjectsWithTag("FirstBall")[0]);
                 BallSpawner.isBallLaunched = false;
                 CreateRow = true;
-                BallSpawner.ballCount++; //temp ball adding code
+                //BallSpawner.ballCount++; //temp ball adding code
                 UpdateScore();
                 totalCollisions = 0;
             }

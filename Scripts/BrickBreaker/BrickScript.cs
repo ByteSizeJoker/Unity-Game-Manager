@@ -11,7 +11,6 @@ public class BrickScript : MonoBehaviour
     [SerializeField]
     GameObject BrickPrefab;
     BrickGenerator brickGenerator;
-    Array.Write write = new Array.Write();
 
     void Awake()
     {
@@ -24,32 +23,27 @@ public class BrickScript : MonoBehaviour
 
         // Get TMProUGUI component from BrickPrefab
         TextMeshProUGUI ToughnessText = BrickPrefab.GetComponentInChildren<TextMeshProUGUI>();
+        int Toughness = int.Parse(ToughnessText.text);
 
         /*  When GameObject on layer 7 (Ball) collides and Toughness is not 0 decrease it by 1
             Simulate Brick breaking behavior                                                     */
-        if (collision.gameObject.layer == 7 && int.Parse(ToughnessText.text) != 0)
+        if (collision.gameObject.layer == 7 && Toughness != 0)
         {
-            ToughnessText.text = (int.Parse(ToughnessText.text) - 1).ToString();
-            write.Custom(brickGenerator.UniversalBrickHolder, Row, Column, int.Parse(ToughnessText.text));
+            ToughnessText.text = (Toughness - 1).ToString();
+            brickGenerator.BrickArray[Row, Column] = Toughness - 1;
         }
 
         // Destroy BrickPrefab when Toughness is 0
         if (int.Parse(ToughnessText.text) == 0)
         {
-            write.Custom(brickGenerator.UniversalBrickHolder, Row, Column, 0);
-            Destroy(BrickPrefab);
+            brickGenerator.BrickArray[Row, Column] = 0;
+            Destroy(this.gameObject);
         }
     }
 
     public void SetIndex(int i, int j)
     {
         Row = i;
-        Column = j;
-        //Debug.Log(Row + ", " + Column);
-    }
-
-    public Vector2Int GetIndex()
-    {
-        return new Vector2Int(Row, Column);
+        Column = j;;
     }
 }

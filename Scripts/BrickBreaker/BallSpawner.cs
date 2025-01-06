@@ -31,7 +31,8 @@ public class BallSpawner : MonoBehaviour
     [Tooltip("Number of Balls that player has collected while playing\nDefault: 1")]
     [SerializeField]
     int balls;
-    public static int ballCount;    //Static Variable of Balls for providing reference in all the scripts
+    public static int ballCount;   //Static Variable of Balls for providing reference in all the scripts
+    public static int newBalls = 0;
 
     [Tooltip("Delay between instantiation of balls\nDefault: 1\n[Note: Measurement is not in seconds or any other general unit]")]
     [SerializeField]
@@ -105,6 +106,8 @@ public class BallSpawner : MonoBehaviour
     IEnumerator LaunchBalls()
     {
         //Prepare Variables before launching balls
+        ballCount = balls + newBalls;
+        Debug.Log(ballCount);
         int ballNumber = 0;
         isBallLaunched = true;
         areAllBallsLaunched = false;

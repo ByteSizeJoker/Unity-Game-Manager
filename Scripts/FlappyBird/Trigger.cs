@@ -2,7 +2,7 @@ using UnityEngine;
 
 //* Formatted and Commented
 //! Method Should'nt be edited for Flappy Bird Game
-public class Trigger : MonoBehaviour
+public class FB_Trigger : MonoBehaviour
 {
     // Private reference to Logic script
     public LogicFB logic;
