@@ -1,10 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-//* Formatted and Commented
+//# Formatted and Commented
+
+/// <summary>
+/// Manages the spawning and launching of balls during gameplay. Handles aiming, launching, and ball count updates.
+/// </summary>
 public class BallSpawner : MonoBehaviour
 {
     #region Variables
@@ -12,79 +14,88 @@ public class BallSpawner : MonoBehaviour
     [Header("Game Objects")]
     [Space(10)]
 
-    [Tooltip("Ball Spawner\nThe prefab that represents the ball spawner in the game and is instantiated when the game starts.")]
+    [Tooltip("Prefab for the Ball Spawner. This is instantiated when the game starts.")]
     [SerializeField]
     GameObject ballSpawner;
 
-    [Tooltip("Ball Prefab\nThe prefab that represents the ball in the game and is instantiated n time\nwhere n is ballCount.")]
+    [Tooltip("Prefab for the Ball. This prefab is instantiated multiple times based on the ball count.")]
     [SerializeField]
     GameObject ballPrefab;
-
-    [Tooltip("")]
-    [SerializeField]
-    GameObject BallHolder;
-
 
     [Header("Properties")]
     [Space(10)]
 
-    [Tooltip("Number of Balls that player has collected while playing\nDefault: 1")]
+    [Tooltip("Number of balls collected by the player. Default: 1.")]
     [SerializeField]
     int balls;
-    public static int ballCount;   //Static Variable of Balls for providing reference in all the scripts
-    public static int newBalls = 0;
 
-    [Tooltip("Delay between instantiation of balls\nDefault: 1\n[Note: Measurement is not in seconds or any other general unit]")]
+    public static int ballCount;   // Tracks total balls available across all scripts
+    public static int newBalls = 0; // Tracks newly added balls during gameplay
+
+    [Tooltip("Delay between the launch of each ball. Default: 1.\nNote: The unit is not in seconds.")]
     [SerializeField]
     float intervalBetweenBallLaunches;
 
-    [Tooltip("Force applied to the ball when it is launched\nDefault: 5")]
+    [Tooltip("Force applied to a ball during launch. Default: 5.")]
     [SerializeField]
     float force;
 
-    [Tooltip("Minimum and Maximum angle for which aiming line will be rendered and the ball can be launched\nDefault: -87, 87")]
+    [Tooltip("Minimum and maximum angles for aiming and launching the ball. Default: -87, 87.")]
     [SerializeField]
     Vector2 minMaxAngle;
 
-    [Tooltip("LayerMask for raycast")]
+    [Tooltip("LayerMask for detecting collisions using raycast.")]
     [SerializeField]
     LayerMask layerMask;
 
-    RaycastHit2D ray;
-    float angle;
-    public static bool isBallLaunched;      //  Static bool for checking if LaunchBalls method is executed or not
-    public static bool areAllBallsLaunched; //  Static bool for checking if all the balls are launched or not
+    RaycastHit2D ray;  // Stores the raycast hit information
+    float angle;       // Stores the current aiming angle
+
+    public static bool isBallLaunched;       // Indicates if the LaunchBalls method has executed
+    public static bool areAllBallsLaunched; // Indicates if all balls have been launched
+
     #endregion
 
     #region Methods
 
-    //* Runs before the game starts/before the first frame
+    /// <summary>
+    /// Initializes the total ball count at the start of the game.
+    /// </summary>
     void Awake()
     {
-        ballCount = balls;
+        ballCount = balls; // Set the static ball count to the number of balls collected.
     }
 
-    //* Called after Start Method, and Runs repeatedly at a fixed time interval during the game, mainly used for physics related tasks
+    /// <summary>
+    /// Handles physics-related tasks at fixed intervals, such as updating the aiming line.
+    /// </summary>
     void FixedUpdate()
     {
-        DrawDots();
+        DrawDots(); // Continuously draw the aiming trajectory.
     }
 
-    //* Called after Start Method, and Runs once every frame
+    /// <summary>
+    /// Monitors user input and triggers ball launching if conditions are met.
+    /// </summary>
     void Update()
     {
-        //Checks if Mouse Button is released, it's not over UI and ball is not launched (LaunchBalls method is not executed)
+        /*  Check if the left mouse button is released, no ball is currently launched, 
+            and the pointer is not over a UI element.                                  */
         if (Input.GetMouseButtonUp(0) && !isBallLaunched && !EventSystem.current.IsPointerOverGameObject())
         {
-            if (angle >= minMaxAngle.x && angle <= minMaxAngle.y) //Check if user is aiming in the correct angle
+            // Launch the balls if the aiming angle is within the valid range.
+            if (angle >= minMaxAngle.x && angle <= minMaxAngle.y)
                 StartCoroutine(LaunchBalls());
         }
     }
 
-    //* Render the aiming line using Dots Class
+
+    /// <summary>
+    /// Draws the aiming line to visualize the trajectory using the Dots class.
+    /// </summary>
     void DrawDots()
     {
-        //Check if Mouse Button is pressed/Held, it's not over UI and ball is not launched (LaunchBalls method is not executed)
+        // Checks if the left mouse button is pressed/held, the pointer is not over a UI element, and no ball is currently launched.
         if (Input.GetMouseButton(0) && !isBallLaunched && !EventSystem.current.IsPointerOverGameObject())
         {
             ray = Physics2D.Raycast(transform.position, transform.up, 15f, layerMask);
@@ -92,49 +103,56 @@ public class BallSpawner : MonoBehaviour
             Vector3 dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
             angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
 
+            // Draws the aiming line if the angle is within the allowed range.
             if (angle >= minMaxAngle.x && angle <= minMaxAngle.y)
             {
                 Dots.Instance.DrawDottedLine(transform.position, ray.point);
                 Dots.Instance.DrawDottedLine(ray.point, ray.point + reflectPos.normalized * 2f);
             }
 
+            // Updates the object's rotation to match the aim direction.
             transform.rotation = Quaternion.AngleAxis(angle, transform.forward);
         }
     }
 
-    //* Launches n ball after t delay where n is ballCount and t is intervalBetweenBallLaunches
+    /// <summary>
+    /// Launches multiple balls with a delay between each launch. Adjusts properties based on ball count and intervals.
+    /// </summary>
     IEnumerator LaunchBalls()
     {
-        //Prepare Variables before launching balls
+        // Sets up variables before launching balls.
         ballCount = balls + newBalls;
         Debug.Log(ballCount);
         int ballNumber = 0;
         isBallLaunched = true;
         areAllBallsLaunched = false;
-        BallPlatformCollisionDetector.Executed = false;
-        float interval = (float)((intervalBetweenBallLaunches - ballCount * 0.01f) * 0.1f < 0.04f ? 0.04f : (intervalBetweenBallLaunches - ballCount * 0.01f) * 0.1f);
+        BallPlatformCollisionDetector.hasSpawnerPositionBeenSet = false;
 
-        //Check if ballCount is 0 if it is then set it to 1 so game doesn't freeze
+        // Calculate interval for ball launches, making sure it doesn't go below a minimum threshold.
+        float interval = Mathf.Max((intervalBetweenBallLaunches - ballCount * 0.01f) * 0.1f, 0.04f);
+
+        // Ensures at least one ball is launched.
         if (ballCount == 0) ballCount = 1;
 
+        // Launch each ball with a delay.
         for (int i = 1; i <= ballCount; i++)
         {
+            yield return new WaitForSeconds(interval); // Delay between launches.
 
-            yield return new WaitForSeconds(interval); //Delay between instantiation of balls
-
-            //Instantiate Ball and Launch it
+            // Instantiate the ball and apply force to launch it.
             GameObject ball = Instantiate(ballPrefab, transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
-            //ball.transform.parent = BallHolder.transform;
             ballNumber++;
             ball.GetComponent<Rigidbody2D>().AddForce(transform.up * force * 100);
 
-            //Add tags to first and last ball for collision detection and logic management
+            // Tag the first for special logic handling.
             if (ballNumber == 1) ball.tag = "FirstBall";
 
-            if (i == ballCount) ballSpawner.SetActive(false); //Hide BallSpawner after all the balls are launched
+            // Deactivate the ball spawner once all balls are launched.
+            if (i == ballCount) ballSpawner.SetActive(false);
         }
         areAllBallsLaunched = true;
     }
     #endregion
+
 }
 

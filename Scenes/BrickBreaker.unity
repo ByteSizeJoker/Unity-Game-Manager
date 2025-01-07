@@ -1005,12 +1005,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballSpawner: {fileID: 1475385611}
-  Platform: {fileID: 958484808}
+  platform: {fileID: 958484808}
   score: 0
-  ScoreText: {fileID: 1572721238250005965}
-  HighScoreTxt: {fileID: 1572721238089492087}
+  scoreText: {fileID: 1572721238250005965}
+  highscoreText: {fileID: 1572721238089492087}
   resetHighScore: 1
-  totalCollisions: 0
 --- !u!1 &1039348384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1633,7 +1632,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballSpawner: {fileID: 1475385611}
   ballPrefab: {fileID: 1551842977000183179, guid: a831398848064b94e831ea362c54d9fe, type: 3}
-  BallHolder: {fileID: 1086712362}
   balls: 1
   intervalBetweenBallLaunches: 1
   force: 5
@@ -1721,7 +1719,7 @@ GameObject:
   - component: {fileID: 1559059197}
   - component: {fileID: 1559059196}
   m_Layer: 5
-  m_Name: Button (Legacy)
+  m_Name: Test Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1952,12 +1950,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9c4b54a06022534885cdc2d2108405b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BrickPrefab: {fileID: 7144742732791165626, guid: 3b7ad963485771141b0739beb0c65aa6, type: 3}
-  BallPrefab: {fileID: 1551842977000183179, guid: a831398848064b94e831ea362c54d9fe, type: 3}
-  ScaleOfBrick: {x: 0.0055, y: 0.0055}
-  OffsetBetBricks: -1.375
+  brickPrefab: {fileID: 7144742732791165626, guid: 3b7ad963485771141b0739beb0c65aa6, type: 3}
+  ballPrefab: {fileID: 1551842977000183179, guid: a831398848064b94e831ea362c54d9fe, type: 3}
+  scaleOfBrick: {x: 0.0055, y: 0.0055}
+  offsetBetBricks: -1.375
   offsetBY: {x: 0.555, y: 1.65}
-  SpriteHolder:
+  spriteHolder:
   - {fileID: -1649882587, guid: abaebe5e3ce500141ad888d623bff973, type: 3}
   - {fileID: 2093530492, guid: abaebe5e3ce500141ad888d623bff973, type: 3}
   - {fileID: 1489447997, guid: abaebe5e3ce500141ad888d623bff973, type: 3}
@@ -1967,8 +1965,8 @@ MonoBehaviour:
   - {fileID: 1804183353, guid: abaebe5e3ce500141ad888d623bff973, type: 3}
   - {fileID: -1122058784, guid: abaebe5e3ce500141ad888d623bff973, type: 3}
   - {fileID: -935824846, guid: abaebe5e3ce500141ad888d623bff973, type: 3}
-  GlowSprite: {fileID: 21300000, guid: 123a9ae2a23f2ff49a4b1816d47dad5a, type: 3}
-  ScoreText: {fileID: 1572721238250005965}
+  glowSprite: {fileID: 21300000, guid: 123a9ae2a23f2ff49a4b1816d47dad5a, type: 3}
+  scoreText: {fileID: 1572721238250005965}
 --- !u!114 &2088450216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2088,7 +2086,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 30.13501}
-  m_SizeDelta: {x: 227.2664, y: 93.9885}
+  m_SizeDelta: {x: 299.5977, y: 134.4091}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2127637412
 MonoBehaviour:

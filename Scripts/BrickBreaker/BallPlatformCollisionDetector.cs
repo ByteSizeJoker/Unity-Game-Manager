@@ -1,116 +1,113 @@
 using UnityEngine;
 using TMPro;
 
-//* Formatted and Commented
-public class BallPlatformCollisionDetector : MonoBehaviour
-{
+//# Formatted and Commented
+
+/// <summary>
+/// Detects collisions between the ball and the platform, manages the ball spawner's activation,
+/// updates the score based on the player's progress, and handles the creation of new rows of bricks.
+/// </summary>
+public class BallPlatformCollisionDetector : MonoBehaviour {
     #region Variables
     [Header("GameObjects")]
     [Space(10)]
 
-    [Tooltip("Ball Spawner GameObject\nAttach GameObject that holds the BallSpawner.cs Script.")]
+    [Tooltip("Ball Spawner GameObject. Attach the GameObject with BallSpawner.cs Script.")]
     [SerializeField]
     GameObject ballSpawner;
 
-    [Tooltip("Platform on which Ball Spawner is kept.\nAttach GameObject that holds the *this* Script.")]
+    [Tooltip("Platform holding the Ball Spawner. Attach the GameObject containing this Script.")]
     [SerializeField]
-    GameObject Platform;
+    GameObject platform;
 
-    Vector2 SpawnerNewPosition;
-
+    Vector2 spawnerNewPosition;
 
     [Header("Score Management")]
-    [Space(10)]  
+    [Space(10)]
 
-    [Tooltip("Score\nDefault: 0")]
+    [Tooltip("Player's current score. Starts at 0.")]
     [SerializeField]
     int score = 0;
 
-    [Tooltip("Score Text\nAttach GameObject that holds the TextMeshProUGUI Component.")]
+    [Tooltip("Text displaying the current score. Attach a TextMeshProUGUI component.")]
     [SerializeField]
-    TextMeshProUGUI ScoreText;
+    TextMeshProUGUI scoreText;
 
-    [Tooltip("HighScore Text\nAttach GameObject that holds the TextMeshProUGUI Component.")]
+    [Tooltip("Text displaying the highest score. Attach a TextMeshProUGUI component.")]
     [SerializeField]
-    TextMeshProUGUI HighScoreTxt;
+    TextMeshProUGUI highscoreText;
 
-    [Tooltip("Reset HighScore\nSet to false before building project.\nDefault: false")]
+    [Tooltip("Enable to reset the highscore. Disable before building the project.")]
     [SerializeField]
     bool resetHighScore = false;
 
+    // Prevents repositioning of ballSpawner until all balls are launched
+    public static bool hasSpawnerPositionBeenSet = false;
 
-    //just for preventing code from changing position of ballSpawner before all balls are launched
-    public static bool Executed = false;
-    
-    //just for telling code in BrickGenerator.cs to create a new row of brick once
-    public static bool CreateRow = false;
-    
-    public int totalCollisions = 0;
+    // Instructs BrickGenerator to create a new row of bricks once
+    public static bool createRow = false;
+
+    // Stores the total number of collisions with the balls
+    int totalCollisions = 0;
     #endregion
 
 
     #region Methods
 
-    //* Runs before the game starts/ before the first frame
+    /// <summary>
+    /// Initializes high score text from PlayerPrefs and updates the score display.
+    /// </summary>
     void Awake()
     {
-        HighScoreTxt.text = PlayerPrefsManager.HighScorePlayerPrefs(score, "BB_HighScore", resetHighScore).ToString();
+        highscoreText.text = PlayerPrefsManager.HighScorePlayerPrefs(score, "BB_HighScore", resetHighScore).ToString();
         UpdateScore();
     }
 
-    //* Runs when GameObject with Collider and *this* Script/Method is collided with and other colliders
+    /// <summary>
+    /// Handles collision events with the platform, updating ball positions, managing spawner activation,
+    /// tracking collisions, and updating scores.
+    /// </summary>
+    /// <param name="collision">Collision details for the colliding object.</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Check if collided GameObject is on layer 7 (Ball)
-        if (collision.gameObject.layer == 7)
+        if (collision.gameObject.layer == 7) // Check if the collided object is a ball
         {
-            //Assigning GameObjects and Components
             GameObject ball = collision.gameObject;
             Animator ballAnimator = ball.GetComponent<Animator>();
             Rigidbody2D rb = ball.GetComponent<Rigidbody2D>();
 
-            //Preventing ball from bouncing after colliding with "Platform" GameObject
+            // Stop ball movement and position it on the platform
             rb.bodyType = RigidbodyType2D.Static;
-            ball.transform.position = new Vector2(ball.transform.position.x, Platform.transform.position.y + 0.185f);
+            ball.transform.position = new Vector2(ball.transform.position.x, platform.transform.position.y + 0.185f);
 
-            totalCollisions++;
+            totalCollisions++; // Increment collision count
 
-            //Managing BallSpawner
-
-            /*  When first ball is collides take it's x position and Platform's y position
-                and assign it to SpawnerNewPosition and ball                                */
+            // Update spawner position based on the first ball's position
             if (ball.CompareTag("FirstBall"))
             {
-                SpawnerNewPosition = new Vector2(ball.transform.position.x, Platform.transform.position.y + 0.185f);
-                ball.transform.position = SpawnerNewPosition;
+                spawnerNewPosition = new Vector2(ball.transform.position.x, platform.transform.position.y + 0.185f);
+                ball.transform.position = spawnerNewPosition;
             }
 
-            /*  If all balls are launched and below code isn't executed then set ballSpawner's position
-                to SpawnerNewPosition and make it active also set Executed to true                      */
-            if (BallSpawner.areAllBallsLaunched)
+            // Activate the spawner if all balls are launched and position is not yet set
+            if (BallSpawner.areAllBallsLaunched && !hasSpawnerPositionBeenSet)
             {
-                if (!Executed)
-                {
-                    ballSpawner.transform.position = SpawnerNewPosition;
-                    ballSpawner.SetActive(true);
-                    Executed = true;
-                }
-
+                ballSpawner.transform.position = spawnerNewPosition;
+                ballSpawner.SetActive(true);
+                hasSpawnerPositionBeenSet = true;
             }
 
-            /*  If totalCollisions is equal to BallCount or BallCount is 1 then destroy FirstBall and set isBallLaunched to false
-                also set CreateRow to true                                                                          */
+            // Handle end-of-round updates and reset collision tracking
             if (totalCollisions == BallSpawner.ballCount || BallSpawner.ballCount == 1)
             {
                 Destroy(GameObject.FindGameObjectsWithTag("FirstBall")[0]);
                 BallSpawner.isBallLaunched = false;
-                CreateRow = true;
-                //BallSpawner.ballCount++; //temp ball adding code
+                createRow = true;
                 UpdateScore();
                 totalCollisions = 0;
             }
 
-            /* If ball isn't FirstBall then play Shrinking animation and destroy it */
+            // Play shrinking animation and destroy non-first balls
             if (!ball.CompareTag("FirstBall"))
             {
                 ballAnimator.SetTrigger("Play");
@@ -119,14 +116,15 @@ public class BallPlatformCollisionDetector : MonoBehaviour
         }
     }
 
-    //*  Updates Score and HighScore- Just adds 1 to score and checks if score is higher than HighScore
-    //*  if it is then set HighScore value to score and update and save PlayerPrefs
+    /// <summary>
+    /// Increments the score, updates the score text, and checks for a new high score.
+    /// Saves the high score in PlayerPrefs if a new high score is achieved.
+    /// </summary>
     public void UpdateScore()
     {
         score++;
-        ScoreText.text = "Score: " + score.ToString();
-        HighScoreTxt.text = "HighScore: " + PlayerPrefsManager.HighScorePlayerPrefs(score, "BB_HighScore", false);
+        scoreText.text = "Score: " + score.ToString();
+        highscoreText.text = "HighScore: " + PlayerPrefsManager.HighScorePlayerPrefs(score, "BB_HighScore", false);
     }
-
     #endregion
 }

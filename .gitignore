@@ -51,7 +51,7 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
-*.meta
+#*.meta
 # Temporary ignoring meta files
 
 # Unity3D generated file on crash reports

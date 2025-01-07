@@ -1,79 +1,102 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+//# Formatted and Commented
 
-//* Formatted and Commented
+/// <summary>
+/// Handles the behavior and movement of the Bird GameObject in the Flappy Bird game.
+/// It responds to user input (mouse click) to make the bird flap, manages collision detection, 
+/// and triggers game over logic when the bird collides with obstacles or falls out of bounds.
+/// </summary>
 public class BirdScript : MonoBehaviour
 {
     #region Variables
     [Header("Game Objects and Components")]
     [Space(10)]
 
-    [Tooltip("Bird GameObject\nGameObject on layer 'Player' in Flappy Bird Game")]
+    /// <summary>
+    /// The Bird GameObject controlled by the player.
+    /// </summary>
+    [Tooltip("Bird GameObject\nThe main player object in the Flappy Bird game.")]
     [SerializeField]
-    GameObject Bird;
-
+    GameObject bird;
 
     [Header("Variables")]
     [Space(10)]
 
-    [Tooltip("Bird's Rigidbody\nRigidbody2D component from Bird GameObject")]
+    /// <summary>
+    /// Rigidbody2D component attached to the Bird GameObject.
+    /// </summary>
+    [Tooltip("Bird's Rigidbody\nThe Rigidbody2D component from the Bird GameObject.")]
     [SerializeField]
-    Rigidbody2D Rigidbody;
+    Rigidbody2D rb;
 
+    /// <summary>
+    /// The upward velocity applied to the Bird when it flaps.
+    /// </summary>
     [Tooltip("Velocity applied to the Bird when it flaps.")]
     [SerializeField]
     float flapSpeed;
-    
-    // Private bool to check if the Bird is alive
+
+    /// <summary>
+    /// A flag indicating whether the Bird is alive.
+    /// </summary>
     bool isBirdAlive = true;
 
-    // Private Reference to logicFB Script
+    /// <summary>
+    /// Reference to the `LogicFB` script for managing game logic.
+    /// </summary>
     LogicFB logic;
-    
-    // Start is called before the first frame update
     #endregion
 
     #region Methods
-    //* Runs before the game starts/ before the first frame
+
+    /// <summary>
+    /// Initializes game settings and references before the first frame update.
+    /// </summary>
     void Awake()
     {
-        // Get GameObject with tag 'LogicFB' (Get logicFB Script)
+        // Get the LogicFB script from the GameObject tagged as 'LogicFB'.
         logic = GameObject.FindGameObjectWithTag("LogicFB").GetComponent<LogicFB>();
     }
 
-    //* Called after Start Method, and Runs once every frame
+    /// <summary>
+    /// Handles input and applies flap velocity to the Bird when the left mouse button is clicked.
+    /// </summary>
     void Update()
     {
-        // If Mouse Button is pressed and Bird is alive and velocity to bird
-        if (Input.GetMouseButtonDown(0) == true && isBirdAlive == true && LogicFB.isGameStarted)
+        // Check if the left mouse button is clicked, the Bird is alive, and the game has started.
+        if (Input.GetMouseButtonDown(0) && isBirdAlive && LogicFB.isGameStarted)
         {
-            //Check if Mouse is not over UI
+            // Ensure the mouse click is not over UI elements.
             if (!EventSystem.current.IsPointerOverGameObject())
             {
-                Rigidbody.velocity = Vector2.up * flapSpeed;
+                // Apply upward velocity to the Bird.
+                rb.velocity = Vector2.up * flapSpeed;
             }
         }
     }
 
-    //* Runs when GameObject with Collider and *this* Script/Method is collided with and other colliders
+    /// <summary>
+    /// Detects collisions and triggers game over logic when the Bird collides with an object.
+    /// </summary>
+    /// <param name="collision">The collision data from the Bird's Rigidbody2D.</param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        /*  Check if collided GameObject is not on layer 3
-            (Barrier above Screen to prevent Bird from Flapping over the Screen)    */
+        // Ignore collisions with the barrier layer (layer 3).
         if (collision.gameObject.layer != 3)
         {
-            // Call Score Managing Methods
-            //logic.HighScore();
+            // Trigger game-over logic.
             logic.GameOver();
             isBirdAlive = false;
 
-            // Pause Time if Bird Dies and falls below Screen
-            if (Bird.transform.position.y <= -10)
+            // Pause the game if the Bird falls below the screen.
+            if (bird.transform.position.y <= -10)
             {
                 Time.timeScale = 0f;
             }
         }
     }
     #endregion
+
 }

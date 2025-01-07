@@ -1,6 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+//# Formatted and Commented
+
+/// <summary>
+/// Manages the background image's scrolling effect by adjusting its UV coordinates.
+/// </summary>
 public class BgImgLoper : MonoBehaviour
 {
     [SerializeField] private RawImage img;

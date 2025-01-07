@@ -2222,7 +2222,7 @@ MonoBehaviour:
   PauseButton: {fileID: 942641472}
   score: 0
   scoretxt: {fileID: 669764283}
-  HighScoreText: {fileID: 999294750}
+  highscoreText: {fileID: 999294750}
   resetHighScore: 1
 --- !u!1 &929816866
 GameObject:
@@ -5348,8 +5348,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b2681c503fe0fa4d9c34d96a125148d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bird: {fileID: 1819277494}
-  Rigidbody: {fileID: 1819277497}
+  bird: {fileID: 1819277494}
+  rb: {fileID: 0}
   flapSpeed: 11
 --- !u!58 &1819277496
 CircleCollider2D:
