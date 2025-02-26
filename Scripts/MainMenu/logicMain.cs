@@ -34,7 +34,9 @@ public class logicMain : MonoBehaviour
     {
         initialPanel1Pos = panel1.GetComponent<RectTransform>().anchoredPosition;
         initialPanel2Pos = panel2.GetComponent<RectTransform>().anchoredPosition;
-        PlayerPrefs.DeleteAll(); // Clears all saved PlayerPrefs data
+
+        if (deletePlayerPrefs) PlayerPrefs.DeleteAll(); // Clears all saved PlayerPrefs data
+
         WelcomeScreen(); // Shows the welcome screen if applicable
         Application.targetFrameRate = 90; // Sets the target frame rate to 90
     }
