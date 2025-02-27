@@ -540,18 +540,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &251531177
-Transform:
+--- !u!224 &251531177
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 251531176}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 58.940983, y: -79.54881, z: -5.9339886}
-  m_LocalScale: {x: 0.390625, y: 0.390625, z: 0.390625}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1555093101}
   - {fileID: 1403418332}
@@ -560,6 +559,11 @@ Transform:
   - {fileID: 1244361981}
   m_Father: {fileID: 1530895268}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &260896453
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,8 +648,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 894168685}
-        m_TargetAssemblyTypeName: logicFB, Assembly-CSharp
-        m_MethodName: ReturntoMainMenu
+        m_TargetAssemblyTypeName: LogicFB, Assembly-CSharp
+        m_MethodName: FBMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -884,7 +888,7 @@ Transform:
   m_GameObject: {fileID: 401129100}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1171.5, y: -560, z: 15.19101}
+  m_LocalPosition: {x: 3.63, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1594,7 +1598,7 @@ Transform:
   m_GameObject: {fileID: 540612920}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1179, y: -560, z: 15.19101}
+  m_LocalPosition: {x: -8.68, y: 1.09, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1670,7 +1674,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &658026836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2132,7 +2136,7 @@ GameObject:
   - component: {fileID: 894168682}
   - component: {fileID: 894168683}
   - component: {fileID: 894168685}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: LogicManager
   m_TagString: LogicFB
   m_Icon: {fileID: 0}
@@ -2148,9 +2152,9 @@ Transform:
   m_GameObject: {fileID: 894168680}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.7105746, y: -0.06, z: -0.0041464646}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2211,15 +2215,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7aa8e848d4918469fab1fe777397f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  ResetHightscore: 0
-  scoretxt: {fileID: 669764283}
-  HighScoreText: {fileID: 999294750}
   FBMenuUI: {fileID: 1530895264}
   FBGameUI: {fileID: 658026835}
   gamePausedScreen: {fileID: 363815574}
   gameOverScreen: {fileID: 2096805659}
   PauseButton: {fileID: 942641472}
+  score: 0
+  scoretxt: {fileID: 669764283}
+  highscoreText: {fileID: 999294750}
+  resetHighScore: 1
 --- !u!1 &929816866
 GameObject:
   m_ObjectHideFlags: 0
@@ -2443,7 +2447,7 @@ GameObject:
   - component: {fileID: 942641473}
   - component: {fileID: 942641472}
   m_Layer: 5
-  m_Name: MainMenu (Button)
+  m_Name: PauseMenu (Button)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3083,7 +3087,7 @@ Transform:
   m_GameObject: {fileID: 1244361980}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1183.4, y: -561, z: 15.19101}
+  m_LocalPosition: {x: -0.89, y: 3.89, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -3795,7 +3799,7 @@ Transform:
   m_GameObject: {fileID: 1403418331}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1173.1, y: -559, z: 15.19101}
+  m_LocalPosition: {x: 5.92, y: 2.31, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -4395,7 +4399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1530895265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4586,7 +4590,7 @@ Transform:
   m_GameObject: {fileID: 1555093100}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1166.34, y: -559, z: 15.19101}
+  m_LocalPosition: {x: 9.01, y: 3.55, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -4728,7 +4732,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 894168685}
-        m_TargetAssemblyTypeName: logicFB, Assembly-CSharp
+        m_TargetAssemblyTypeName: LogicFB, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
@@ -5263,8 +5267,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 894168685}
-        m_TargetAssemblyTypeName: logicFB, Assembly-CSharp
-        m_MethodName: ReturntoMainMenu
+        m_TargetAssemblyTypeName: LogicFB, Assembly-CSharp
+        m_MethodName: ReturnToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5325,7 +5329,7 @@ GameObject:
   - component: {fileID: 1819277497}
   - component: {fileID: 1819277496}
   - component: {fileID: 1819277495}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Bird
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5344,20 +5348,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b2681c503fe0fa4d9c34d96a125148d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bird: {fileID: 1819277494}
-  Rigidbody: {fileID: 1819277497}
+  bird: {fileID: 1819277494}
+  rb: {fileID: 0}
   flapSpeed: 11
-  logic: {fileID: 894168685}
-  birdisAlive: 1
-  Flap:
-    m_Name: Flap
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: cf9d9977-246c-44be-acae-311b6448a16a
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
 --- !u!58 &1819277496
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6225,7 +6218,7 @@ RectTransform:
   m_GameObject: {fileID: 2041407787}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1.1111112}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1530895268}
@@ -6428,10 +6421,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 930fc20e8bc585b449c36c2d81f78074, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pipe: {fileID: 5629097158388405260, guid: 7404bcf613705c545bb20cbe9a314a8c, type: 3}
-  spawnrate: 5
-  heightoffset: 4
-  logic: {fileID: 894168685}
+  pipePrefab: {fileID: 5629097158388405260, guid: 7404bcf613705c545bb20cbe9a314a8c, type: 3}
+  spawnRate: 4.5
+  heightOffset: 5
 --- !u!61 &2145278476
 BoxCollider2D:
   m_ObjectHideFlags: 0

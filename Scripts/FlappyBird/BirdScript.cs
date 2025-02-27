@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -47,6 +48,8 @@ public class BirdScript : MonoBehaviour
     /// Reference to the `LogicFB` script for managing game logic.
     /// </summary>
     LogicFB logic;
+
+    public bool immortalBird = false;
     #endregion
 
     #region Methods
@@ -66,13 +69,25 @@ public class BirdScript : MonoBehaviour
     void Update()
     {
         // Check if the left mouse button is clicked, the Bird is alive, and the game has started.
-        if (Input.GetMouseButtonDown(0) && isBirdAlive && LogicFB.isGameStarted)
+        if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown("space")) && isBirdAlive && LogicFB.isGameStarted)
         {
             // Ensure the mouse click is not over UI elements.
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 // Apply upward velocity to the Bird.
                 rb.velocity = Vector2.up * flapSpeed;
+            }
+
+        }
+
+        if (immortalBird)
+        {
+            rb.angularVelocity = 0f;
+            bird.transform.rotation = Quaternion.identity;
+            if (immortalBird && bird.transform.position.y < -100)
+            {
+                bird.transform.position = new Vector2(0, 0);
+                rb.velocity = Vector2.zero;
             }
         }
     }
@@ -84,17 +99,18 @@ public class BirdScript : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // Ignore collisions with the barrier layer (layer 3).
-        if (collision.gameObject.layer != 3)
+        if (collision.gameObject.layer != 3 && !immortalBird)
         {
             // Trigger game-over logic.
             logic.GameOver();
             isBirdAlive = false;
 
             // Pause the game if the Bird falls below the screen.
-            if (bird.transform.position.y <= -10)
+            if (bird.transform.position.y <= -10 && !immortalBird)
             {
                 Time.timeScale = 0f;
             }
+
         }
     }
     #endregion

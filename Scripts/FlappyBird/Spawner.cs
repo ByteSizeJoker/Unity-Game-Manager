@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 //# Formatted and Commented
 //! Method Should'nt be edited. It's Read-Only
@@ -19,7 +20,7 @@ public class Spawner : MonoBehaviour
     /// </summary>
     [Tooltip("Pipe Prefab\nThe GameObject that is instantiated repeatedly to create Pipes(Obstacles) during the game.")]
     [SerializeField]
-    GameObject pipePrefab;
+    GameObject[] pipeHolder;
 
     /// <summary>
     /// The spawn rate of pipes. Controls how frequently the pipes are spawned.
@@ -37,9 +38,16 @@ public class Spawner : MonoBehaviour
     /// <summary>
     /// The vertical distance between pipes. Controls the height variation of pipes.
     /// </summary>
-    [Tooltip("The amount of distance between the pipes.\nDefault: 7")]
+    [Tooltip("The amount of distance between the pipes.\nDefault: 0.5")]
     [SerializeField]
-    float heightOffset;
+    float minStep;
+
+    /// <summary>
+    /// The vertical distance between pipes. Controls the height variation of pipes.
+    /// </summary>
+    [Tooltip("The amount decrease from spawnRate based on current score.\nDefault: 0.05")]
+    [SerializeField]
+    float diffDecrement = 0.05f;
 
     /// <summary>
     /// Private reference to the LogicFB script, which manages the game's logic.
@@ -92,12 +100,30 @@ public class Spawner : MonoBehaviour
         if (LogicFB.isGameStarted)
         {
 
-            // Define the lowest and highest Y positions for the pipe
-            float lowest_point = transform.position.y - heightOffset;
-            float highest_point = transform.position.y + heightOffset;
+            GameObject pipe;
+            int selectPipe = Random.Range(0, pipeHolder.Length * 10);
+            float heightOffset;
+
+            do {
+                heightOffset = Random.Range(-3.5f, 3.5f);
+                minStep = (minStep > 3.4 || minStep < -3.4) ? 0.5f : minStep; // Infinite Loop prevention
+            } while (Mathf.Abs(heightOffset - PlayerPrefs.GetFloat("LastHeightOffset", 0f)) < minStep);
+
+            if (selectPipe < pipeHolder.Length * 10 * 55 / 100)
+            {
+                pipe = pipeHolder[0];
+            } else if (selectPipe < pipeHolder.Length * 10 * 90 / 100) {
+                pipe = pipeHolder[1];
+            } else if (selectPipe < pipeHolder.Length * 10 * 97 / 100) {
+                pipe = pipeHolder[2];
+            } else {
+                pipe = pipeHolder[3];
+            }
 
             // Instantiate the pipe prefab at a random Y position within the range
-            Instantiate(pipePrefab, new Vector3(transform.position.x, Random.Range(lowest_point, highest_point), 0), transform.rotation);
+            Instantiate(pipe, new Vector3(transform.position.x, heightOffset, 0), Quaternion.identity);
+            PlayerPrefs.SetFloat("LastHeightOffset", heightOffset);
+            Debug.Log(heightOffset);
         }
     }
 
@@ -106,26 +132,11 @@ public class Spawner : MonoBehaviour
     /// </summary>
     public void Difficulty()
     {
-        if (logic.score >= 5 && logic.score < 10)
+        // Apply difficulty reduction based on score milestones
+        if (logic.score > 0)
         {
-            if (spawnRate >= 4.5)
-            {
-                spawnRate -= 1F; // Decrease spawn rate to increase pipe frequency
-            }
-        }
-        else if (logic.score >= 10 && logic.score < 20)
-        {
-            if (spawnRate >= 3.5)
-            {
-                spawnRate -= 0.5F; // Further decrease spawn rate
-            }
-        }
-        else if (logic.score >= 20)
-        {
-            if (spawnRate >= 3)
-            {
-                spawnRate -= 0.5F; // Reduce spawn rate even more at higher scores
-            }
+            // Gradual spawn rate reduction based on score
+            spawnRate = Mathf.Max(4.5f - (logic.score * diffDecrement), 2.5f);
         }
     }
 

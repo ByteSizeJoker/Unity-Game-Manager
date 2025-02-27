@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
+using UnityEngine.UI;
 
 //# Formatted and Commented
 
@@ -8,6 +10,7 @@ using System.Collections;
 /// </summary>
 public class logicMain : MonoBehaviour
 {
+    #region Variables
     [Header("UI Related Game Objects")]
     [Tooltip("GameObject for the Play screen.")]
     public GameObject playScreen;
@@ -24,7 +27,24 @@ public class logicMain : MonoBehaviour
     [Tooltip("Welcome screen GameObject, shown when the app is first launched.")]
     public GameObject _WelcomeScreen;
 
+    [Header("Search Bar")]
+    [Tooltip("Content Holder (Parent GameObject) for the elements to be searched in.")]
+    public GameObject contentHolder;
+
+    [Tooltip("Array of elements to be searched.")]
+    public GameObject[] elements;
+
+    [Tooltip("Search Bar GameObject")]
+    public GameObject searchBar;
+
+    public int totalElements;
+
+    public bool deletePlayerPrefs;
+
+    public Sprite[] Noise;
+
     private Vector3 initialPanel1Pos, initialPanel2Pos;
+    #endregion
 
     /// <summary>
     /// Called when the script is initialized.
@@ -39,6 +59,14 @@ public class logicMain : MonoBehaviour
 
         WelcomeScreen(); // Shows the welcome screen if applicable
         Application.targetFrameRate = 90; // Sets the target frame rate to 90
+
+        totalElements = contentHolder.transform.childCount;
+        elements = new GameObject[totalElements];
+
+        for (int i = 0; i < totalElements; i++)
+        {
+            elements[i] = contentHolder.transform.GetChild(i).gameObject;
+        }
     }
 
     /// <summary>
@@ -135,4 +163,32 @@ public class logicMain : MonoBehaviour
     {
         yield return new WaitForSeconds(delay); // Waits for the specified time
     }
+
+    public void SearchBar()
+    {
+        string search = searchBar.GetComponent<TMP_InputField>().text;
+        int searchTxtLength = search.Length;
+
+        int searchedElements = 0;
+
+        foreach (GameObject ele in elements)
+        {
+            searchedElements++;
+
+            if (ele.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text.Length >= searchTxtLength)
+            {
+                if (search.ToLower() == ele.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text.Substring(0, searchTxtLength).ToLower())
+                {
+                    ele.SetActive(true);
+                }
+                else {
+                    ele.SetActive(false);
+                }
+            }
+        }
+    }
+
+
+
+
 }

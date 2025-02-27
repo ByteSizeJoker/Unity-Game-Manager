@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 120
+  m_text: "\xD8"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b741db7ac3d1c423aad5b49a9780ca2d, type: 2}
   m_sharedMaterial: {fileID: 5568139486216784236, guid: b741db7ac3d1c423aad5b49a9780ca2d, type: 2}
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 43.7
+  m_fontSize: 44.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -305,6 +305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8090fe26a9d32974cafc8b3b1a06d53e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Rows: 0
+  Row: 0
   Column: 0
   BrickPrefab: {fileID: 7144742732791165626}

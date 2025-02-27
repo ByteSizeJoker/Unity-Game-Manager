@@ -5349,8 +5349,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bird: {fileID: 1819277494}
-  rb: {fileID: 0}
+  rb: {fileID: 1819277497}
   flapSpeed: 11
+  immortalBird: 1
 --- !u!58 &1819277496
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6421,9 +6422,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 930fc20e8bc585b449c36c2d81f78074, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pipePrefab: {fileID: 5629097158388405260, guid: 7404bcf613705c545bb20cbe9a314a8c, type: 3}
+  pipeHolder:
+  - {fileID: 5629097158388405260, guid: 7404bcf613705c545bb20cbe9a314a8c, type: 3}
+  - {fileID: 7145491804496464888, guid: 70cb4426601dfcb408d3ee1c927891f5, type: 3}
+  - {fileID: 2157966043339440467, guid: 79b9bb08e855c7e46ab29f8dd4719f36, type: 3}
+  - {fileID: 603986980751587804, guid: 7eff0d7e6c6e5774daa5cd0f44cc7bfe, type: 3}
   spawnRate: 4.5
-  heightOffset: 5
+  minStep: 3
+  diffDecrement: 0.05
 --- !u!61 &2145278476
 BoxCollider2D:
   m_ObjectHideFlags: 0
