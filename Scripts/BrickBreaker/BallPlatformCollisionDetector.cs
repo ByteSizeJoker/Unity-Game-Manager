@@ -8,6 +8,7 @@ using TMPro;
 /// updates the score based on the player's progress, and handles the creation of new rows of bricks.
 /// </summary>
 public class BallPlatformCollisionDetector : MonoBehaviour {
+    
     #region Variables
     [Header("GameObjects")]
     [Space(10)]
@@ -53,7 +54,6 @@ public class BallPlatformCollisionDetector : MonoBehaviour {
 
 
     #region Methods
-
     /// <summary>
     /// Initializes high score text from PlayerPrefs and updates the score display.
     /// </summary>
@@ -61,6 +61,17 @@ public class BallPlatformCollisionDetector : MonoBehaviour {
     {
         highscoreText.text = PlayerPrefsManager.HighScorePlayerPrefs(score, "BB_HighScore", resetHighScore).ToString();
         UpdateScore();
+    }
+
+    /// <summary>
+    /// Increments the score, updates the score text, and checks for a new high score.
+    /// Saves the high score in PlayerPrefs if a new high score is achieved.
+    /// </summary>
+    public void UpdateScore()
+    {
+        score++;
+        scoreText.text = "Score: " + score.ToString();
+        highscoreText.text = "HighScore: " + PlayerPrefsManager.HighScorePlayerPrefs(score, "BB_HighScore", false);
     }
 
     /// <summary>
@@ -114,17 +125,6 @@ public class BallPlatformCollisionDetector : MonoBehaviour {
                 Destroy(ball, ballAnimator.GetCurrentAnimatorStateInfo(0).length);
             }
         }
-    }
-
-    /// <summary>
-    /// Increments the score, updates the score text, and checks for a new high score.
-    /// Saves the high score in PlayerPrefs if a new high score is achieved.
-    /// </summary>
-    public void UpdateScore()
-    {
-        score++;
-        scoreText.text = "Score: " + score.ToString();
-        highscoreText.text = "HighScore: " + PlayerPrefsManager.HighScorePlayerPrefs(score, "BB_HighScore", false);
     }
     #endregion
 }

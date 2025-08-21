@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 //# Formatted and Commented
@@ -84,5 +85,9 @@ public class LogicBB : MonoBehaviour
             : new Vector3(1, 0.1f, 1); // Narrow height for horizontal borders
     }
     #endregion
-}
 
+    public void ReturnToMainMenu()
+    {
+        MainMenu.LoadMainMenu();
+    }
+}

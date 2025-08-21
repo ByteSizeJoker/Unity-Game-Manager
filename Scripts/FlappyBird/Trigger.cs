@@ -10,7 +10,7 @@ using UnityEngine;
 public class FB_Trigger : MonoBehaviour
 {
     // Private reference to the LogicFB script, which handles game logic and score.
-    public LogicFB logic;
+    LogicFB logic;
 
     /// <summary>
     /// Called after Awake and before the first frame update.
@@ -19,7 +19,7 @@ public class FB_Trigger : MonoBehaviour
     void Start()
     {
         // Find the GameObject with the "LogicFB" tag and get its LogicFB component
-        logic = GameObject.FindGameObjectWithTag("LogicFB").GetComponent<LogicFB>();
+        logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicFB>();
     }
 
     /// <summary>

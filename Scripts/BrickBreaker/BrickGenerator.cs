@@ -50,7 +50,7 @@ public class BrickGenerator : MonoBehaviour
 
     // Private instances of helper classes for managing brick data
     Array.Shift shift = new Array.Shift();  // Handles shifting rows of bricks
-    Array.Write write = new Array.Write();  // Handles writing brick properties to the array
+    Array.Fill fill = new Array.Fill();  // Handles writing brick properties to the array
     #endregion
 
 
@@ -86,7 +86,7 @@ public class BrickGenerator : MonoBehaviour
 
         // Shift rows and randomize the first row
         shift.LinearShift(brickArray, 1);
-        write.random(brickArray, (int)(score / 1.05f), score + 2, 0, 1);
+        fill.random(brickArray, (int)(score / 1.05f), score + 2, 0, 1);
         BrickSpawner(score);
     }
 

@@ -18,6 +18,10 @@ public class BallSpawner : MonoBehaviour
     [SerializeField]
     GameObject ballSpawner;
 
+    [Tooltip("Parent Gameobject of spawned balls")]
+    [SerializeField]
+    GameObject ballHolder;
+
     [Tooltip("Prefab for the Ball. This prefab is instantiated multiple times based on the ball count.")]
     [SerializeField]
     GameObject ballPrefab;
@@ -53,7 +57,6 @@ public class BallSpawner : MonoBehaviour
 
     public static bool isBallLaunched;       // Indicates if the LaunchBalls method has executed
     public static bool areAllBallsLaunched; // Indicates if all balls have been launched
-
     #endregion
 
     #region Methods
@@ -71,7 +74,11 @@ public class BallSpawner : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-        DrawDots(); // Continuously draw the aiming trajectory.
+        // Checks if the left mouse button is pressed/held, the pointer is not over a UI element, and no ball is currently launched.
+        if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject() && !isBallLaunched)
+        {
+            DrawDots(); // Continuously draw the aiming trajectory.
+        } 
     }
 
     /// <summary>
@@ -81,7 +88,7 @@ public class BallSpawner : MonoBehaviour
     {
         /*  Check if the left mouse button is released, no ball is currently launched, 
             and the pointer is not over a UI element.                                  */
-        if (Input.GetMouseButtonUp(0) && !isBallLaunched && !EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonUp(0) && !EventSystem.current.IsPointerOverGameObject() && !isBallLaunched)
         {
             // Launch the balls if the aiming angle is within the valid range.
             if (angle >= minMaxAngle.x && angle <= minMaxAngle.y)
@@ -95,24 +102,20 @@ public class BallSpawner : MonoBehaviour
     /// </summary>
     void DrawDots()
     {
-        // Checks if the left mouse button is pressed/held, the pointer is not over a UI element, and no ball is currently launched.
-        if (Input.GetMouseButton(0) && !isBallLaunched && !EventSystem.current.IsPointerOverGameObject())
+        ray = Physics2D.Raycast(transform.position, transform.up, 15f, layerMask);
+        Vector2 reflectPos = Vector2.Reflect(new Vector3(ray.point.x, ray.point.y) - transform.position, ray.normal);
+        Vector3 dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
+        angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
+
+        // Draws the aiming line if the angle is within the allowed range.
+        if (angle >= minMaxAngle.x && angle <= minMaxAngle.y)
         {
-            ray = Physics2D.Raycast(transform.position, transform.up, 15f, layerMask);
-            Vector2 reflectPos = Vector2.Reflect(new Vector3(ray.point.x, ray.point.y) - transform.position, ray.normal);
-            Vector3 dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
-            angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
-
-            // Draws the aiming line if the angle is within the allowed range.
-            if (angle >= minMaxAngle.x && angle <= minMaxAngle.y)
-            {
-                Dots.Instance.DrawDottedLine(transform.position, ray.point);
-                Dots.Instance.DrawDottedLine(ray.point, ray.point + reflectPos.normalized * 2f);
-            }
-
-            // Updates the object's rotation to match the aim direction.
-            transform.rotation = Quaternion.AngleAxis(angle, transform.forward);
+            Dots.Instance.DrawDottedLine(transform.position, ray.point);
+            Dots.Instance.DrawDottedLine(ray.point, ray.point + reflectPos.normalized * 2f);
         }
+
+        // Updates the object's rotation to match the aim direction.
+        transform.rotation = Quaternion.AngleAxis(angle, transform.forward);
     }
 
     /// <summary>
@@ -122,7 +125,6 @@ public class BallSpawner : MonoBehaviour
     {
         // Sets up variables before launching balls.
         ballCount = balls + newBalls;
-        Debug.Log(ballCount);
         int ballNumber = 0;
         isBallLaunched = true;
         areAllBallsLaunched = false;
@@ -142,6 +144,7 @@ public class BallSpawner : MonoBehaviour
             // Instantiate the ball and apply force to launch it.
             GameObject ball = Instantiate(ballPrefab, transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
             ballNumber++;
+            ball.transform.SetParent(ballHolder.transform);
             ball.GetComponent<Rigidbody2D>().AddForce(transform.up * force * 100);
 
             // Tag the first for special logic handling.

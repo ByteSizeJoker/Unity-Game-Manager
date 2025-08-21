@@ -60,7 +60,7 @@ public class BirdScript : MonoBehaviour
     void Awake()
     {
         // Get the LogicFB script from the GameObject tagged as 'LogicFB'.
-        logic = GameObject.FindGameObjectWithTag("LogicFB").GetComponent<LogicFB>();
+        logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicFB>();
     }
 
     /// <summary>

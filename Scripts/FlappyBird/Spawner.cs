@@ -52,7 +52,7 @@ public class Spawner : MonoBehaviour
     /// <summary>
     /// Private reference to the LogicFB script, which manages the game's logic.
     /// </summary>
-    private LogicFB logic;
+    LogicFB logic;
 
     #endregion
 
@@ -64,7 +64,7 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         // Get reference to the LogicFB script using its tag
-        logic = GameObject.FindGameObjectWithTag("LogicFB").GetComponent<LogicFB>();
+        logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicFB>();
 
         // Spawn the first pipe
         SpawnPipe();

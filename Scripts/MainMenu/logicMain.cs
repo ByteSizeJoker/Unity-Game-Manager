@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
-using UnityEngine.UI;
 
 //# Formatted and Commented
 
@@ -41,8 +40,6 @@ public class logicMain : MonoBehaviour
 
     public bool deletePlayerPrefs;
 
-    public Sprite[] Noise;
-
     private Vector3 initialPanel1Pos, initialPanel2Pos;
     #endregion
 
@@ -52,6 +49,7 @@ public class logicMain : MonoBehaviour
     /// </summary>
     public void Awake()
     {
+        ScreenOrientationManager.SetPortrait();
         initialPanel1Pos = panel1.GetComponent<RectTransform>().anchoredPosition;
         initialPanel2Pos = panel2.GetComponent<RectTransform>().anchoredPosition;
 

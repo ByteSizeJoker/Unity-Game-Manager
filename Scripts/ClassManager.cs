@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class ClassManager
 {
-    public static bool FB_restarted = false;  // Tracks whether the game has been restarted.
+    public static bool FB_restarted = false;  // Tracks whether the game has been restarted. >> Use PlayerPrefs in LogicFB instead of this static var
 }
 
 /// <summary>
@@ -107,10 +107,11 @@ public class ScreenOrientationManager
 public class Array
 {
     /// <summary>
-    /// Prints the contents of a 2D array as a formatted string to the console.
+    /// Prints the contents of a 2D array as a formatted string to the console. <br/>
+    /// Only Used for Debug Purposes
     /// </summary>
     /// <param name="array">The 2D array to be printed.</param>
-    public static void PrintArray(int[,] array)
+    public static void Print(int[,] array)
     {
         int rows = array.GetLength(0);
         int columns = array.GetLength(1);
@@ -138,7 +139,7 @@ public class Array
         /// </summary>
         /// <param name="array">The array to shift.</param>
         /// <param name="shiftRate">The number of times to shift the array.</param>
-        public void LinearShift(int[,] array, int shiftRate)
+        public void LinearShift(int[,] array, int shiftRate) // Currently shifts only Rows
         {
             int rows = array.GetLength(0);
             int columns = array.GetLength(1);
@@ -163,7 +164,7 @@ public class Array
     /// <summary>
     /// A class for writing custom and random values into a 2D array.
     /// </summary>
-    public class Write
+    public class Fill
     {
         /// <summary>
         /// Writes a custom value to a specified position in the array.
@@ -171,7 +172,7 @@ public class Array
         /// <param name="array">The array to modify.</param>
         /// <param name="row">The row to modify.</param>
         /// <param name="column">The column to modify.</param>
-        /// <param name="value">The value to write into the array.</param>
+        /// <param name="value">The value to write into the array.</param> 
         public void Custom(int[,] array, int row, int column, int value)
         {
             array[row, column] = value;

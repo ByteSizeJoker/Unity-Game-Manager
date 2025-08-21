@@ -1,5 +1,7 @@
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //# Formatted and Commented
 
@@ -22,6 +24,10 @@ public class BrickScript : MonoBehaviour
     void Awake()
     {
         brickGenerator = GameObject.Find("BrickGenerator").GetComponent<BrickGenerator>();
+        if (transform.position.y < 2.5f) {
+            Debug.Log("Game Over");
+            SceneManager.LoadScene("BrickBreaker");
+        }
     }
 
     /// <summary>
